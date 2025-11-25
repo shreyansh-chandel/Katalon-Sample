@@ -33,7 +33,7 @@ jobs:
           -e LT_ACCESS_KEY="${LT_ACCESS_KEY}" \
           -e PROJECT_TOKEN="${PROJECT_TOKEN}" \
           -e KATALON_API_KEY="${KATALON_API_KEY}" \
-          katalonstudio/katalon:10.3.1 \
+          katalonstudio/katalon:10.4.2 \
           bash -c "
             echo '--- Installing Node & npm ---' &&
             apt-get update &&
