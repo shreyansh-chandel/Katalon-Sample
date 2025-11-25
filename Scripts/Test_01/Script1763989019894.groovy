@@ -21,11 +21,11 @@ import org.openqa.selenium.WebDriver as WebDriver
 import org.openqa.selenium.chrome.ChromeDriver as ChromeDriver
 import com.kms.katalon.core.webui.driver.DriverFactory as DriverFactory
 
-CustomKeywords.'com.katalon.plugin.keyword.smartui.SmartKeywords.startServer'('', '', '')
-
 WebUI.openBrowser('')
 
 WebUI.navigateToUrl('https://www.lambdatest.com/')
+
+CustomKeywords.'com.katalon.plugin.keyword.smartui.SmartKeywords.startServer'('', '', '')
 
 CustomKeywords.'com.katalon.plugin.keyword.smartui.SmartKeywords.takeSnapshot'('snapshot-2')
 
