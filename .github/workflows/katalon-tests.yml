@@ -23,14 +23,7 @@ jobs:
         cat <<EOF > "$GITHUB_WORKSPACE/settings/external/com.kms.katalon.keyword.SmartUI-Keywords.properties"
         Project\ Token="2355379\#01KATEP2VDPDTTM3KNAEZX92GH\#SyncTrueAutomation_03"
         Application\ Name="Katalon Studio"
-        EOF  
-
-    - name: Inject Chrome Settings
-      run: |
-        mkdir -p "$GITHUB_WORKSPACE/settings/internal"
-        cat <<EOF > "$GITHUB_WORKSPACE/settings/internal/com.kms.katalon.core.webui.chrome.properties"
-        args=--no-sandbox;--disable-dev-shm-usage;--disable-gpu;--headless=new
-        EOF   
+        EOF     
 
     - name: Run Katalon Test in Docker (with SmartUI CLI)
       run: |
@@ -55,5 +48,6 @@ jobs:
               -retry=0 \
               -testSuitePath='Test Suites/Suite_01' \
               -browserType='Chrome (headless)' \
+              -Dsmartui.overrideWebDriver=false \
               -apiKey='${KATALON_API_KEY}'
           "
