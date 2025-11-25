@@ -25,6 +25,13 @@ jobs:
         Application\ Name="Katalon Studio"
         EOF  
 
+    - name: Inject Chrome Settings
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/settings/internal"
+        cat <<EOF > "$GITHUB_WORKSPACE/settings/internal/com.kms.katalon.core.webui.chrome.properties"
+        args=--no-sandbox;--disable-dev-shm-usage;--disable-gpu;--headless=new
+        EOF   
+
     - name: Run Katalon Test in Docker (with SmartUI CLI)
       run: |
         docker run --rm \
