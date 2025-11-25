@@ -1,0 +1,52 @@
+name: Katalon Single Test (Docker)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      LT_USERNAME: "shreyanshc"
+      LT_ACCESS_KEY: "LT_papk3bG9im1ng9jxWp32HId1B1mKRr5x0G8dvdTcD3Zoe3k"
+      PROJECT_TOKEN: "2355379#01KATEP2VDPDTTM3KNAEZX92GH#SyncTrueAutomation_03"
+      KATALON_API_KEY: ${{ secrets.KATALON_API_KEY }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Inject Plugin Settings
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/settings/external"
+        cat <<EOF > "$GITHUB_WORKSPACE/settings/external/com.kms.katalon.keyword.SmartUI-Keywords.properties"
+        Project\ Token="2355379\#01KATEP2VDPDTTM3KNAEZX92GH\#SyncTrueAutomation_03"
+        Application\ Name="Katalon Studio"
+        EOF  
+
+    - name: Run Katalon Test in Docker (with SmartUI CLI)
+      run: |
+        docker run --rm \
+          -v "${GITHUB_WORKSPACE}":/katalon/katalon-source \
+          -e LT_USERNAME="${LT_USERNAME}" \
+          -e LT_ACCESS_KEY="${LT_ACCESS_KEY}" \
+          -e PROJECT_TOKEN="${PROJECT_TOKEN}" \
+          -e KATALON_API_KEY="${KATALON_API_KEY}" \
+          katalonstudio/katalon:9.7.2 \
+          bash -c "
+            echo '--- Installing Node & npm ---' &&
+            apt-get update &&
+            apt-get install -y nodejs npm &&
+
+            echo '--- Installing SmartUI CLI ---' &&
+            npm i -g @lambdatest/smartui-cli@latest &&
+
+            echo '--- Running Katalon Tests ---' &&
+            katalonc -noSplash -runMode=console \
+              -projectPath='/katalon/katalon-source/Katalon_github.prj' \
+              -retry=0 \
+              -testSuitePath='Test Suites/Suite_01' \
+              -browserType='Chrome (headless)' \
+              -apiKey='${KATALON_API_KEY}'
+          "
